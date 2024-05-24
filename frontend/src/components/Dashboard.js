@@ -1,52 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import Filter from './Filter';
-import InsightList from './InsightList';
-import Visualization from './Visualization';
-import { fetchData } from '../services/api';
-import { processData } from '../utils/dataProcessing';
-import { Container } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Filter from '../components/Filter';
+import InsightList from '../components/InsightList';
+import Visualization from '../components/Visualization';
 
 const Dashboard = () => {
   const [insights, setInsights] = useState([]);
-  const [processedData, setProcessedData] = useState([]);
-  const [filters, setFilters] = useState({
-    endYear: '',
-    topics: '',
-    sector: '',
-    region: '',
-    pestle: '',
-    source: '',
-    swot: '',
-    country: '',
-    city: '',
-    likelihood: '',
-    intensity: '',
-    relevance: '',
-    year: '',
-    url: '',
-  });
+  const [filters, setFilters] = useState({});
 
   useEffect(() => {
-    const fetchInsights = async () => {
+    const fetchData = async () => {
       try {
-        const result = await fetchData(filters);
-        console.log('API response:', result);
-        setInsights(result);
-        setProcessedData(processData(result));
+        const response = await axios.get('http://localhost:8080/api/insights');
+        setInsights(response.data);
       } catch (error) {
         console.error('Error fetching insights:', error);
       }
     };
-    fetchInsights();
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchFilteredData = async () => {
+      try {
+        const query = new URLSearchParams(filters).toString();
+        const response = await axios.get(`http://localhost:8080/api/insights?${query}`);
+        setInsights(response.data);
+      } catch (error) {
+        console.error('Error fetching filtered insights:', error);
+      }
+    };
+    if (Object.keys(filters).length > 0) {
+      fetchFilteredData();
+    }
   }, [filters]);
 
   return (
-    <Container className="dashboard">
-      <h1 className="mb-4">Data Visualization Dashboard</h1>
+    <div className="dashboard">
       <Filter setFilters={setFilters} />
-      <Visualization insights={processedData} />
       <InsightList insights={insights} />
-    </Container>
+      <Visualization insights={insights} />
+    </div>
   );
 };
 

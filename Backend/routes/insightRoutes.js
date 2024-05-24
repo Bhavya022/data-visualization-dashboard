@@ -7,6 +7,7 @@ const insightsController = require('../controllers/insight.controller');
 // Route to fetch all insights
 router.get('/insights', insightsController.getAllInsights);
 
+router.get('/filter', insightsController.getFilteredInsights);
 // Route to filter insights by end year
 router.get('/insights/filter/endYear/:endYear', insightsController.filterByEndYear);
 

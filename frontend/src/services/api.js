@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-export const fetchData = async (filters) => {
-  try {
-    const queryString = Object.keys(filters)
-      .map(key => `${key}=${encodeURIComponent(filters[key])}`)
-      .join('&');
-    const response = await axios.get(`http://localhost:8080/api/insights/filter?${queryString}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    throw error;
-  }
+const API_URL = 'http://localhost:8080/api/insights';
+
+export const fetchInsights = async () => {
+  const response = await axios.get(API_URL);
+  return response.data;
+};
+
+export const fetchFilteredInsights = async (filters) => {
+  const query = new URLSearchParams(filters).toString();
+  const response = await axios.get(`${API_URL}?${query}`);
+  return response.data;
 };

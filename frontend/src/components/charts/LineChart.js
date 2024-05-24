@@ -1,54 +1,37 @@
-import React from 'react';
-import { Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import React, { useState, useEffect } from 'react';
+import Chart from 'chart.js/auto'; // Import Chart class from chart.js
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+const LineChart = () => {
+  const [chartInstance, setChartInstance] = useState(null);
 
-const LineChart = ({ insights }) => {
-  const chartData = {
-    labels: insights.map(insight => insight.title),
-    datasets: [
-      {
-        label: 'Likelihood',
-        data: insights.map(insight => insight.likelihood),
-        fill: false,
-        backgroundColor: 'rgba(153, 102, 255, 0.6)',
-        borderColor: 'rgba(153, 102, 255, 1)',
-      },
-    ],
-  };
+  useEffect(() => {
+    if (chartInstance) {
+      chartInstance.destroy();
+    }
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Line Chart',
-      },
-    },
-  };
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const newChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [{
+          label: 'My Dataset',
+          data: [65, 59, 80, 81, 56, 55, 40],
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        }]
+      }
+    });
 
-  return <Line data={chartData} options={options} />;
+    setChartInstance(newChartInstance);
+
+    return () => {
+      newChartInstance.destroy();
+    };
+  }, []);
+
+  return <canvas id="myChart" />;
 };
 
 export default LineChart;

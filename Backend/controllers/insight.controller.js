@@ -11,6 +11,49 @@ exports.getAllInsights = async (req, res) => {
     }
 };
 
+exports.getFilteredInsights = async (req, res) => {
+    try {
+        const filters = req.query;
+        let query = {};
+
+        // Apply filters dynamically
+        Object.keys(filters).forEach((key) => {
+            if (filters[key]) {
+                query[key] = { $regex: filters[key], $options: 'i' };
+            }
+        });
+
+        const insights = await Insight.find(query);
+        res.json(insights);
+    } catch (error) {
+        console.error('Error filtering insights:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+
+// exports.getFilteredInsights = async (req, res) => {
+//     try {
+//         const filters = req.query; 
+//         console.log(req.query) 
+//         let query = {};
+
+//         // Apply filters dynamically
+//         Object.keys(filters).forEach((key) => {
+//             if (filters[key]) {
+//                 query[key] = { $regex: filters[key], $options: 'i' };
+//             }
+//         });
+
+//         const insights = await Insight.find(query);
+//         console.log(insights)
+//         res.json(insights);
+//     } catch (error) {
+//         console.error('Error filtering insights:', error);
+//         res.status(500).json({ message: 'Internal server error' });
+//     }
+// };
+
 // Controller to filter insights by end year
 // exports.filterByEndYear = async (req, res) => {
 //     const { endYear } = req.params;

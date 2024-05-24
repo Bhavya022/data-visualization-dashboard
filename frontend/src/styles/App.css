@@ -1,59 +1,19 @@
-.App {
-  font-family: Arial, sans-serif;
-  text-align: center;
+body {
+  background-color: #f8f9fa;
 }
 
 .dashboard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 20px;
 }
 
 .filter {
-  margin-bottom: 20px;
-}
-
-.visualization {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  width: 100%;
-}
-
-.chart {
-  margin: 20px;
-  width: 45%;
+  margin: 20px 0;
 }
 
 .insight-list {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  margin-top: 20px;
 }
 
-.insight-item {
-  background: #f9f9f9;
-  padding: 20px;
-  margin: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  width: 30%;
-}
-
-.insight-item h3 {
-  margin: 0;
-  font-size: 1.2em;
-}
-
-.insight-item p {
-  font-size: 0.9em;
-  color: #333;
-}
-
-.insight-item a {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
+.visualization {
+  margin-top: 20px;
 }

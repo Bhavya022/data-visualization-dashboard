@@ -1,23 +1,69 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 
 const Filter = ({ setFilters }) => {
-  const handleChange = (e) => {
-    setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const [selectedFilter, setSelectedFilter] = useState('');
+  const [inputValue, setInputValue] = useState('');
+
+  const filterOptions = [
+    { value: 'endYear', label: 'End Year' },
+    { value: 'topics', label: 'Topics' },
+    { value: 'sector', label: 'Sector' },
+    { value: 'region', label: 'Region' },
+    { value: 'pestle', label: 'PEST' },
+    { value: 'source', label: 'Source' },
+    { value: 'swot', label: 'SWOT' },
+    { value: 'country', label: 'Country' },
+    { value: 'city', label: 'City' },
+    { value: 'likelihood', label: 'Likelihood' },
+    { value: 'intensity', label: 'Intensity' },
+    { value: 'relevance', label: 'Relevance' },
+    { value: 'year', label: 'Year' },
+    { value: 'url', label: 'URL' },
+  ];
+
+  const handleFilterChange = (e) => {
+    setSelectedFilter(e.target.value);
+  };
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleApplyFilter = () => {
+    if (selectedFilter && inputValue) {
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        [selectedFilter]: inputValue,
+      }));
+    }
   };
 
   return (
-    <div className="filter">
-      <input type="text" name="endYear" placeholder="End Year" onChange={handleChange} />
-      <input type="text" name="topics" placeholder="Topics" onChange={handleChange} />
-      <input type="text" name="sector" placeholder="Sector" onChange={handleChange} />
-      <input type="text" name="region" placeholder="Region" onChange={handleChange} />
-      <input type="text" name="pestle" placeholder="PESTLE" onChange={handleChange} />
-      <input type="text" name="source" placeholder="Source" onChange={handleChange} />
-      <input type="text" name="swot" placeholder="SWOT" onChange={handleChange} />
-      <input type="text" name="country" placeholder="Country" onChange={handleChange} />
-      <input type="text" name="city" placeholder="City" onChange={handleChange} />
-    </div>
+    <Form className="filter">
+      <Row className="align-items-center mb-3">
+        <Col xs={3}>
+          <Form.Label>Select Filter</Form.Label>
+        </Col>
+        <Col xs={3}>
+          <Form.Control as="select" value={selectedFilter} onChange={handleFilterChange}>
+            <option value="">Select Filter</option>
+            {filterOptions.map(option => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </Form.Control>
+        </Col>
+        <Col xs={3}>
+          <Form.Control type="text" placeholder="Enter Value" value={inputValue} onChange={handleInputChange} />
+        </Col>
+        <Col xs={3}>
+          <Button variant="primary" onClick={handleApplyFilter}>
+            Apply Filter
+          </Button>
+        </Col>
+      </Row>
+    </Form>
   );
-}
+};
 
 export default Filter;

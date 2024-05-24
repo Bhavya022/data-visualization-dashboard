@@ -19,7 +19,20 @@ ChartJS.register(
   Legend
 );
 
-const BarChart = ({ data }) => {
+const BarChart = ({ insights }) => {
+  const chartData = {
+    labels: insights.map(insight => insight.title),
+    datasets: [
+      {
+        label: 'Intensity',
+        data: insights.map(insight => insight.intensity),
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
+
   const options = {
     responsive: true,
     plugins: {
@@ -33,11 +46,7 @@ const BarChart = ({ data }) => {
     },
   };
 
-  if (!data || !data.labels || !data.datasets) {
-    return <div>Loading...</div>;
-  }
-
-  return <Bar data={data} options={options} />;
+  return <Bar data={chartData} options={options} />;
 };
 
 export default BarChart;

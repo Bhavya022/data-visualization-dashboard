@@ -21,7 +21,20 @@ ChartJS.register(
   Legend
 );
 
-const LineChart = ({ data }) => {
+const LineChart = ({ insights }) => {
+  const chartData = {
+    labels: insights.map(insight => insight.title),
+    datasets: [
+      {
+        label: 'Likelihood',
+        data: insights.map(insight => insight.likelihood),
+        fill: false,
+        backgroundColor: 'rgba(153, 102, 255, 0.6)',
+        borderColor: 'rgba(153, 102, 255, 1)',
+      },
+    ],
+  };
+
   const options = {
     responsive: true,
     plugins: {
@@ -35,11 +48,7 @@ const LineChart = ({ data }) => {
     },
   };
 
-  if (!data || !data.labels || !data.datasets) {
-    return <div>Loading...</div>;
-  }
-
-  return <Line data={data} options={options} />;
+  return <Line data={chartData} options={options} />;
 };
 
 export default LineChart;
